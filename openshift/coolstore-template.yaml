@@ -517,6 +517,7 @@ objects:
       targetPort: 5432
     selector:
       deploymentconfig: inventory-postgresql
+
 # Catalog Service
 - apiVersion: v1
   kind: ImageStream
@@ -531,6 +532,8 @@ objects:
   kind: BuildConfig
   metadata:
     name: catalog
+    labels:
+      app: catalog
   spec:
     output:
       to:
@@ -549,7 +552,7 @@ objects:
           value: ${MAVEN_MIRROR_URL}
         from:
           kind: ImageStreamTag
-          name: jboss-webserver31-tomcat8-openshift:1.0
+          name: redhat-openjdk18-openshift:1.1
           namespace: ${IMAGE_STREAM_NAMESPACE}
       type: Source
     triggers:
@@ -578,10 +581,6 @@ objects:
       spec:
         containers:
         - env:
-          - name: JWS_ADMIN_USERNAME
-            value: Skq3VtCd
-          - name: JWS_ADMIN_PASSWORD
-            value: oktt6yhw
           - name: DB_USERNAME
             value: ${CATALOG_DB_USERNAME}
           - name: DB_PASSWORD
@@ -592,6 +591,16 @@ objects:
             value: catalog-mongodb
           image: catalog
           imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 10
+            httpGet:
+              path: /health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 30
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 1
           name: catalog
           ports:
           - containerPort: 8778
@@ -600,21 +609,22 @@ objects:
           - containerPort: 8080
             name: http
             protocol: TCP
+          - containerPort: 8443
+            name: https
+            protocol: TCP
           readinessProbe:
             failureThreshold: 10
-            exec:
-              command:
-              - /bin/bash
-              - -c
-              - curl -s -u Skq3VtCd:oktt6yhw 'http://localhost:8080/manager/jmxproxy/?get=Catalina%3Atype%3DServer&att=stateName'
-                |grep -iq 'stateName *= *STARTED'
-            initialDelaySeconds: 15
+            httpGet:
+              path: /health
+              port: 8080
+              scheme: HTTP
+            initialDelaySeconds: 30
             periodSeconds: 5
             successThreshold: 1
             timeoutSeconds: 1
           resources:
             limits:
-              memory: 600Mi
+              memory: 1Gi
             requests:
               memory: 200Mi
           terminationMessagePath: /dev/termination-log
@@ -756,6 +766,7 @@ objects:
           namespace: ${IMAGE_STREAM_NAMESPACE}
       type: ImageChange
     - type: ConfigChange
+
 # Rating Service
 - apiVersion: v1
   kind: ImageStream
@@ -1030,144 +1041,454 @@ objects:
       password: ${RATING_DB_PASSWORD}
 
 # Cart Service
+
 - apiVersion: v1
+
   kind: ImageStream
+
   metadata:
+
     name: cart
+
     labels:
+
       app: cart
+
   spec:
+
     tags:
+
     - name: latest
+
 - apiVersion: v1
+
   kind: BuildConfig
+
   metadata:
+
     name: cart
+
     labels:
+
       app: cart
+
   spec:
+
     output:
+
       to:
+
         kind: ImageStreamTag
+
         name: cart:latest
+
     source:
+
       contextDir: cart-service
+
       git:
+
         ref: ${GIT_REF}
+
         uri: ${GIT_URI}
+
       type: Git
+
     strategy:
+
       sourceStrategy:
+
         env:
+
         - name: MAVEN_MIRROR_URL
+
           value: ${MAVEN_MIRROR_URL}
+
         from:
+
           kind: ImageStreamTag
+
           name: redhat-openjdk18-openshift:1.1
           namespace: ${IMAGE_STREAM_NAMESPACE}
+
       type: Source
+
     triggers:
+
     - type: ConfigChange
+
     - imageChange: {}
+
       type: ImageChange
+
 - apiVersion: v1
+
   kind: DeploymentConfig
+
   metadata:
+
     name: cart
+
     labels:
+
       app: cart
+
   spec:
+
     replicas: 1
+
     selector:
+
       deploymentconfig: cart
+
     strategy:
+
       resources: {}
+
       type: Recreate
+
     template:
+
       metadata:
+
         labels:
+
           app: cart
+
           deploymentconfig: cart
+
         name: cart
+
       spec:
+
         containers:
+
         - env:
           - name: CATALOG_ENDPOINT
+
             value: "http://catalog:8080"
+
           - name: PRICING_ENDPOINT
+
             value: "http://pricing:8080"
+
           - name: KIE_CONTAINER_DEPLOYMENT
+
             value: ${KIE_CONTAINER_DEPLOYMENT}
+
           - name: KIE_SERVER_USER
+
             value: ${KIE_SERVER_USER}
+
           - name: KIE_SERVER_PASSWORD
+
             value: ${KIE_SERVER_PASSWORD}
+
+          - name: DB_USERNAME
+
+            value: ${CART_DB_USERNAME}
+
+          - name: DB_PASSWORD
+
+            value: ${CART_DB_PASSWORD}
+
+          - name: DB_DATABASE
+
+            value: cartdb
+
           image: cart
+
           imagePullPolicy: Always
+
           livenessProbe:
+
             failureThreshold: 10
+
             httpGet:
+
               path: /health
+
               port: 8080
+
               scheme: HTTP
+
             initialDelaySeconds: 30
-            periodSeconds: 5
-            successThreshold: 1
+            
+            periodSeconds: 5 
+            
+            successThreshold: 1 
+            
             timeoutSeconds: 1
+
           name: cart
+
           ports:
+
           - containerPort: 8778
+
             name: jolokia
+
             protocol: TCP
+
           - containerPort: 8080
+
             name: http
+
             protocol: TCP
-          - containerPort: 8443
-            name: https
+
+          - containerPort: 8888
+
+            name: ping
+
             protocol: TCP
+
           readinessProbe:
+
             failureThreshold: 10
+
             httpGet:
+
               path: /health
+
               port: 8080
+
               scheme: HTTP
+
             initialDelaySeconds: 30
+
             periodSeconds: 5
+
             successThreshold: 1
+
             timeoutSeconds: 1
+
           resources:
+
             limits:
+
               memory: 1Gi
+
             requests:
-              memory: 200Mi
+
+              memory: 512Mi
+
           terminationMessagePath: /dev/termination-log
+
         dnsPolicy: ClusterFirst
+
         restartPolicy: Always
+
         securityContext: {}
+
         terminationGracePeriodSeconds: 75
+
     triggers:
+
     - imageChangeParams:
+
         automatic: true
+
         containerNames:
+
         - cart
+
         from:
+
           kind: ImageStreamTag
+
           name: cart:latest
+
       type: ImageChange
+
     - type: ConfigChange
+
 - apiVersion: v1
+
   kind: Service
+
   metadata:
+
+    annotations:
+
+      service.alpha.openshift.io/dependencies: '[{"name":"cart-postgresql","namespace":"","kind":"Service"}]'
+
     labels:
+
       app: cart
+
     name: cart
+
   spec:
+
     ports:
+
     - port: 8080
+
       protocol: TCP
+
       targetPort: 8080
+
     selector:
+
       deploymentconfig: cart
+
+- apiVersion: v1
+
+  kind: DeploymentConfig
+
+  metadata:
+
+    name: cart-postgresql
+
+    labels:
+
+      app: cart
+
+      comp-type: database
+
+  spec:
+
+    replicas: 1
+
+    selector:
+
+      deploymentconfig: cart-postgresql
+
+    strategy:
+
+      type: Recreate
+
+    template:
+
+      metadata:
+
+        labels:
+
+          app: cart
+
+          comp-type: database
+
+          deploymentconfig: cart-postgresql
+
+        name: cart-postgresql
+
+      spec:
+
+        containers:
+
+        - env:
+
+          - name: POSTGRESQL_USER
+
+            value: ${CART_DB_USERNAME}
+
+          - name: POSTGRESQL_PASSWORD
+
+            value: ${CART_DB_PASSWORD}
+
+          - name: POSTGRESQL_DATABASE
+
+            value: cartdb
+
+          image: postgresql
+
+          imagePullPolicy: Always
+
+          name: cart-postgresql
+
+          volumeMounts:
+
+          - mountPath: /var/lib/pgsql/data
+
+            name: cart-postgresql-data
+
+          ports:
+
+          - containerPort: 5432
+
+            protocol: TCP
+
+          livenessProbe:
+
+            initialDelaySeconds: 30
+
+            tcpSocket:
+
+              port: 5432
+
+            timeoutSeconds: 1
+
+          readinessProbe:
+
+            exec:
+
+              command:
+
+              - /bin/sh
+
+              - -i
+
+              - -c
+
+              - psql -h 127.0.0.1 -U $POSTGRESQL_USER -q -d $POSTGRESQL_DATABASE -c 'SELECT 1'
+
+            initialDelaySeconds: 5
+
+            timeoutSeconds: 1
+
+        terminationGracePeriodSeconds: 60
+
+        volumes:
+
+        - name: cart-postgresql-data
+
+          emptyDir: {}
+
+    triggers:
+
+    - imageChangeParams:
+
+        automatic: true
+
+        containerNames:
+
+        - cart-postgresql
+
+        from:
+
+          kind: ImageStreamTag
+
+          name: postgresql:latest
+
+          namespace: ${IMAGE_STREAM_NAMESPACE}
+
+      type: ImageChange
+
+    - type: ConfigChange
+
+- apiVersion: v1
+
+  kind: Service
+
+  metadata:
+
+    labels:
+
+      app: cart
+
+    name: cart-postgresql
+
+  spec:
+
+    ports:
+
+    - port: 5432
+
+      targetPort: 5432
+
+    selector:
+
+      deploymentconfig: cart-postgresql
 # Pricing Rules Service
 - apiVersion: v1
   kind: ImageStream
@@ -1788,7 +2109,7 @@ parameters:
   displayName: Git source repository
   name: GIT_URI
   required: true
-  value: https://github.com/jbossdemocentral/coolstore-microservice
+  value: https://github.com/amalkurup/coolstore-microservice.git
 - displayName: Git branch/tag reference
   name: GIT_REF
   required: true
@@ -1813,6 +2134,18 @@ parameters:
   from: '[a-zA-Z0-9]{8}'
   generate: expression
   name: INVENTORY_DB_PASSWORD
+  required: true
+- description: Cart Service database user name
+  displayName: Cart Database username
+  from: user[a-zA-Z0-9]{3}
+  generate: expression
+  name: CART_DB_USERNAME
+  required: true
+- description: Cart Service database user password
+  displayName: Cart Database password
+  from: '[a-zA-Z0-9]{8}'
+  generate: expression
+  name: CART_DB_PASSWORD
   required: true
 - description: Catalog Service database user name
   displayName: Catalog Database username
