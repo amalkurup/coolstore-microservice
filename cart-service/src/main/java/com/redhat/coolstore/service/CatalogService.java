@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.redhat.coolstore.model.kie.Product;
 
-@FeignClient(name = "catalogService", url = "localhost")
+@FeignClient(name = "catalogService", url = "${CATALOG_ENDPOINT}")
 interface CatalogService {
 	@RequestMapping(method = RequestMethod.GET, value = "/api/products")
     List<Product> products();

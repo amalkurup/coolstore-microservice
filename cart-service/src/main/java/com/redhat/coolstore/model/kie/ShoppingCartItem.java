@@ -11,6 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Entity
 @Table(name="shoppingcartitem")
 public class ShoppingCartItem implements Serializable {
@@ -30,6 +32,7 @@ public class ShoppingCartItem implements Serializable {
 	
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="cartid")
+	@JsonBackReference
 	private ShoppingCart cartId;
 	
 	public ShoppingCart getCartId() {

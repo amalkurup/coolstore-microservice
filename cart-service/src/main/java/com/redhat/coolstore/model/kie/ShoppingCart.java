@@ -14,6 +14,8 @@ import javax.persistence.UniqueConstraint;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Entity
 @Table(name="shoppingcart",uniqueConstraints=@UniqueConstraint(columnNames="cartid"),schema="public")
 public class ShoppingCart implements Serializable {
@@ -35,7 +37,8 @@ public class ShoppingCart implements Serializable {
 	private String cartId;
 	
   @OneToMany(mappedBy="cartId", targetEntity = ShoppingCartItem.class,
-		    fetch=FetchType.EAGER, cascade=CascadeType.ALL)	
+		    fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+  @JsonManagedReference
     private List<ShoppingCartItem> shoppingCartItemList;
 
 	public ShoppingCart() {

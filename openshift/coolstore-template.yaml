@@ -1195,6 +1195,10 @@ objects:
           - name: DB_DATABASE
 
             value: cartdb
+            
+          - name: DB_SERVER
+          
+            value: cart-postgresql
 
           image: cart
 
