@@ -24,7 +24,7 @@ public class Product implements Serializable {
 	private String itemId;
 	@Column(name="name")
 	private String name;
-	@Column(name="desc")
+	@Column(name="description")
 	private String desc;
 	@Column(name="price")
 	private double price;
