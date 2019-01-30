@@ -1368,9 +1368,7 @@ objects:
             command:
             - /bin/sh
             - -c
-            - cart-postgresql&&sleep 10&&echo $QUERY | psql
-            -h cart-postgresql -u $POSTGRESQL_USER -D $POSTGRESQL_DATABASE -pPOSTGRESQL_PASSWORD
-            -P 5432
+            - cart-postgresql&&sleep 10&&echo $QUERY | psql -h cart-postgresql -u $POSTGRESQL_USER -D $POSTGRESQL_DATABASE -p $POSTGRESQL_PASSWORD -P 5432
             containerName: cart-postgresql
             env:
             - name: QUERY
