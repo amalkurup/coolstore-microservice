@@ -1438,7 +1438,7 @@ objects:
 
             initialDelaySeconds: 5
 
-            timeoutSeconds: 1
+            timeoutSeconds: 60
 
         terminationGracePeriodSeconds: 60
 
