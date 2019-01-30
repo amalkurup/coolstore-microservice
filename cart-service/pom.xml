@@ -149,6 +149,11 @@
 			<artifactId>postgresql</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+		<dependency>
+      		<groupId>hibernate</groupId>
+      		<artifactId>hibernate-entitymanager</artifactId>
+     		 <version>3.4.0.GA</version>
+       </dependency>
 	    
     </dependencies>
 

@@ -1041,53 +1041,29 @@ objects:
       password: ${RATING_DB_PASSWORD}
 
 # Cart Service
-
 - apiVersion: v1
-
   kind: ImageStream
-
   metadata:
-
     name: cart
-
     labels:
-
       app: cart
-
   spec:
-
     tags:
-
     - name: latest
-
 - apiVersion: v1
-
   kind: BuildConfig
-
   metadata:
-
     name: cart
-
     labels:
-
       app: cart
-
   spec:
-
     output:
-
       to:
-
         kind: ImageStreamTag
-
         name: cart:latest
-
     source:
-
       contextDir: cart-service
-
       git:
-
         ref: ${GIT_REF}
 
         uri: ${GIT_URI}

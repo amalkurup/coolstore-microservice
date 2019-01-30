@@ -17,7 +17,7 @@ import javax.persistence.OneToMany;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
-@Table(name="shoppingcart",uniqueConstraints=@UniqueConstraint(columnNames="cartid"),schema="public")
+@Table(name="shoppingcart",uniqueConstraints=@UniqueConstraint(columnNames="cartid"))
 public class ShoppingCart implements Serializable {
 
 	private static final long serialVersionUID = -1108043957592113528L;
