@@ -1208,7 +1208,7 @@ objects:
               - /bin/sh
               - -i
               - -c
-              - env && sleep 10 && psql --help && psql -h ${CART_POSTGRESQL_SERVICE_HOST} -U $POSTGRESQL_USER -d $POSTGRESQL_DATABASE -W$POSTGRESQL_PASSWORD -p 5432 -c $QUERY1 && psql -h ${CART_POSTGRESQL_SERVICE_HOST} -U $POSTGRESQL_USER -d $POSTGRESQL_DATABASE -W$POSTGRESQL_PASSWORD -p 5432 -c $QUERY2 && psql -h ${CART_POSTGRESQL_SERVICE_HOST} -U $POSTGRESQL_USER -d $POSTGRESQL_DATABASE -W$POSTGRESQL_PASSWORD -p 5432 -c $QUERY3 && psql -h ${CART_POSTGRESQL_SERVICE_HOST} -U $POSTGRESQL_USER -d $POSTGRESQL_DATABASE -W$POSTGRESQL_PASSWORD -p 5432 -c $QUERY4 && psql -h ${CART_POSTGRESQL_SERVICE_HOST} -U $POSTGRESQL_USER -d $POSTGRESQL_DATABASE -W$POSTGRESQL_PASSWORD -p 5432 -c $QUERY5 && psql -h ${CART_POSTGRESQL_SERVICE_HOST} -U $POSTGRESQL_USER -d $POSTGRESQL_DATABASE -W$POSTGRESQL_PASSWORD -p 5432 -c $QUERY6 && psql -h ${CART_POSTGRESQL_SERVICE_HOST} -U $POSTGRESQL_USER -d $POSTGRESQL_DATABASE -W$POSTGRESQL_PASSWORD -p 5432 -c $QUERY7 && psql -h ${CART_POSTGRESQL_SERVICE_HOST} -U $POSTGRESQL_USER -d $POSTGRESQL_DATABASE -W$POSTGRESQL_PASSWORD -p 5432 -c $QUERY8
+              - env && sleep 10 && psql --help && psql -h ${CART_POSTGRESQL_SERVICE_HOST} -U $POSTGRESQL_USER -d $POSTGRESQL_DATABASE -p 5432 -c $QUERY1 && psql -h ${CART_POSTGRESQL_SERVICE_HOST} -U $POSTGRESQL_USER -d $POSTGRESQL_DATABASE -p 5432 -c $QUERY2 && psql -h ${CART_POSTGRESQL_SERVICE_HOST} -U $POSTGRESQL_USER -d $POSTGRESQL_DATABASE -p 5432 -c $QUERY3 && psql -h ${CART_POSTGRESQL_SERVICE_HOST} -U $POSTGRESQL_USER -d $POSTGRESQL_DATABASE -p 5432 -c $QUERY4 && psql -h ${CART_POSTGRESQL_SERVICE_HOST} -U $POSTGRESQL_USER -d $POSTGRESQL_DATABASE -p 5432 -c $QUERY5 && psql -h ${CART_POSTGRESQL_SERVICE_HOST} -U $POSTGRESQL_USER -d $POSTGRESQL_DATABASE -p 5432 -c $QUERY6 && psql -h ${CART_POSTGRESQL_SERVICE_HOST} -U $POSTGRESQL_USER -d $POSTGRESQL_DATABASE -p 5432 -c $QUERY7 && psql -h ${CART_POSTGRESQL_SERVICE_HOST} -U $POSTGRESQL_USER -d $POSTGRESQL_DATABASE -p 5432 -c $QUERY8
             containerName: cart-postgresql
             env:
             - name: QUERY1
@@ -1226,7 +1226,9 @@ objects:
             - name: QUERY7
               value: insert into shoppingcartitem(price,quantity,promosavings,cartid,itemid) values(756.65,3,577.86,'10001','329299')
             - name: QUERY8
-              value: insert into shoppingcartitem(price,quantity,promosavings,cartid,itemid) values(867.78,6,235.46,'10001','329198')        
+              value: insert into shoppingcartitem(price,quantity,promosavings,cartid,itemid) values(867.78,6,235.46,'10001','329198')
+            - name: PGPASSWORD
+              value: $POSTGRESQL_PASSWORD           
           failurePolicy: ignore
         timeoutSeconds: 600
         resources: {}
