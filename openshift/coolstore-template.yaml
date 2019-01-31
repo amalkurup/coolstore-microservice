@@ -1208,7 +1208,7 @@ objects:
               - /bin/sh
               - -i
               - -c
-              - sleep 10 && echo $QUERY | psql -h ${CART_POSTGRESQL_SERVICE_HOST} -U $POSTGRESQL_USER -d $POSTGRESQL_DATABASE -W$POSTGRESQL_PASSWORD -p 5432
+              - env && sleep 10 && psql -h ${CART_POSTGRESQL_SERVICE_HOST} -U $POSTGRESQL_USER -d $POSTGRESQL_DATABASE -W$POSTGRESQL_PASSWORD -p 5432 -c $QUERY
             containerName: cart-postgresql
             env:
             - name: QUERY
