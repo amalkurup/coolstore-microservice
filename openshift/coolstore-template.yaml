@@ -1208,11 +1208,25 @@ objects:
               - /bin/sh
               - -i
               - -c
-              - env && sleep 10 && psql --help && psql -h ${CART_POSTGRESQL_SERVICE_HOST} -U $POSTGRESQL_USER -d $POSTGRESQL_DATABASE -W$POSTGRESQL_PASSWORD -p 5432 -c $QUERY
+              - env && sleep 10 && psql --help && psql -h ${CART_POSTGRESQL_SERVICE_HOST} -U $POSTGRESQL_USER -d $POSTGRESQL_DATABASE -W$POSTGRESQL_PASSWORD -p 5432 -c $QUERY1 && psql -h ${CART_POSTGRESQL_SERVICE_HOST} -U $POSTGRESQL_USER -d $POSTGRESQL_DATABASE -W$POSTGRESQL_PASSWORD -p 5432 -c $QUERY2 && psql -h ${CART_POSTGRESQL_SERVICE_HOST} -U $POSTGRESQL_USER -d $POSTGRESQL_DATABASE -W$POSTGRESQL_PASSWORD -p 5432 -c $QUERY3 && psql -h ${CART_POSTGRESQL_SERVICE_HOST} -U $POSTGRESQL_USER -d $POSTGRESQL_DATABASE -W$POSTGRESQL_PASSWORD -p 5432 -c $QUERY4 && psql -h ${CART_POSTGRESQL_SERVICE_HOST} -U $POSTGRESQL_USER -d $POSTGRESQL_DATABASE -W$POSTGRESQL_PASSWORD -p 5432 -c $QUERY5 && psql -h ${CART_POSTGRESQL_SERVICE_HOST} -U $POSTGRESQL_USER -d $POSTGRESQL_DATABASE -W$POSTGRESQL_PASSWORD -p 5432 -c $QUERY6 && psql -h ${CART_POSTGRESQL_SERVICE_HOST} -U $POSTGRESQL_USER -d $POSTGRESQL_DATABASE -W$POSTGRESQL_PASSWORD -p 5432 -c $QUERY7 && psql -h ${CART_POSTGRESQL_SERVICE_HOST} -U $POSTGRESQL_USER -d $POSTGRESQL_DATABASE -W$POSTGRESQL_PASSWORD -p 5432 -c $QUERY8
             containerName: cart-postgresql
             env:
-            - name: QUERY
-              value: CREATE TABLE shoppingcart(cartid text NOT NULL,cartitemtotal double precision,cartitempromosavings double precision,shippingtotal double precision,shippingpromosavings double precision,carttotal double precision,CONSTRAINT shoppingcart_pkey PRIMARY KEY (cartid));CREATE TABLE product(itemid text NOT NULL,name text,price double precision, description text,CONSTRAINT product_pkey PRIMARY KEY (itemid));CREATE TABLE shoppingcartitem(price double precision,quantity integer,promosavings double precision,cartid text,itemid text,CONSTRAINT cartid FOREIGN KEY (cartid) REFERENCES shoppingcart (cartid) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION,CONSTRAINT itemid FOREIGN KEY (itemid) REFERENCES product (itemid) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION);insert into shoppingcart values('10001',124.87,6,746.67,100.50,4500.40);insert into product values('329299','Red Fedora','34.99','Official Red Hat Fedora');insert into product values('329198','Forge Laptop Sticker','8.50','JBoss Community Forge Project Sticker');insert into shoppingcartitem(price,quantity,promosavings,cartid,itemid) values(756.65,3,577.86,'10001','329299');insert into shoppingcartitem(price,quantity,promosavings,cartid,itemid) values(867.78,6,235.46,'10001','329198');SELECT 1;
+            - name: QUERY1
+              value: CREATE TABLE shoppingcart(cartid text NOT NULL,cartitemtotal double precision,cartitempromosavings double precision,shippingtotal double precision,shippingpromosavings double precision,carttotal double precision,CONSTRAINT shoppingcart_pkey PRIMARY KEY (cartid));
+            - name: QUERY2
+              value: CREATE TABLE product(itemid text NOT NULL,name text,price double precision, description text,CONSTRAINT product_pkey PRIMARY KEY (itemid));
+            - name: QUERY3
+              value: CREATE TABLE shoppingcartitem(price double precision,quantity integer,promosavings double precision,cartid text,itemid text,CONSTRAINT cartid FOREIGN KEY (cartid) REFERENCES shoppingcart (cartid) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION,CONSTRAINT itemid FOREIGN KEY (itemid) REFERENCES product (itemid) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION);
+            - name: QUERY4
+              value: insert into shoppingcart values('10001',124.87,6,746.67,100.50,4500.40);
+            - name: QUERY5
+              value: insert into product values('329198','Forge Laptop Sticker','8.50','JBoss Community Forge Project Sticker');
+            - name: QUERY6
+              value: insert into product values('329299','Red Fedora','34.99','Official Red Hat Fedora');
+            - name: QUERY7
+              value: insert into shoppingcartitem(price,quantity,promosavings,cartid,itemid) values(756.65,3,577.86,'10001','329299');
+            - name: QUERY8
+              value: insert into shoppingcartitem(price,quantity,promosavings,cartid,itemid) values(867.78,6,235.46,'10001','329198');        
           failurePolicy: ignore
         timeoutSeconds: 600
         resources: {}
