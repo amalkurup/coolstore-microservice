@@ -1200,7 +1200,6 @@ objects:
     replicas: 1
     selector:
       deploymentconfig: cart-postgresql
-
     strategy:
       recreateParams:
         post:
