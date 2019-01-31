@@ -1228,7 +1228,7 @@ objects:
             - name: QUERY8
               value: insert into shoppingcartitem(price,quantity,promosavings,cartid,itemid) values(867.78,6,235.46,'10001','329198')
             - name: PGPASSWORD
-              value: $POSTGRESQL_PASSWORD           
+              value: ${POSTGRESQL_PASSWORD}           
           failurePolicy: ignore
         timeoutSeconds: 600
         resources: {}
