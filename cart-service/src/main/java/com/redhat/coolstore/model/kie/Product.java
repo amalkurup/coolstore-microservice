@@ -14,7 +14,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.hibernate.annotations.GenericGenerator;
 @Entity
-@Table(name="product",uniqueConstraints = @UniqueConstraint(columnNames = "itemid"),schema="public")
+@Table(name="product",uniqueConstraints = @UniqueConstraint(columnNames = "itemid"))
 public class Product implements Serializable {
 
 	private static final long serialVersionUID = -7304814269819778382L;
@@ -24,10 +24,10 @@ public class Product implements Serializable {
 	private String itemId;
 	@Column(name="name")
 	private String name;
-	@Column(name="description")
-	private String desc;
 	@Column(name="price")
 	private double price;
+	@Column(name="description")
+	private String desc;
 	
 	public Product() {
 		

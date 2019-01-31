@@ -21,6 +21,9 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 public class ShoppingCart implements Serializable {
 
 	private static final long serialVersionUID = -1108043957592113528L;
+	@Id
+    @Column(name="cartid")
+	private String cartId;
 	@Column(name="cartitemtotal")
 	private double cartItemTotal;
 	@Column(name="cartitempromosavings")
@@ -32,9 +35,7 @@ public class ShoppingCart implements Serializable {
 	@Column(name="carttotal")
 	private double cartTotal;
 	
-    @Id
-    @Column(name="cartid")
-	private String cartId;
+    
 	
   @OneToMany(mappedBy="cartId", targetEntity = ShoppingCartItem.class,
 		    fetch=FetchType.EAGER, cascade=CascadeType.ALL)

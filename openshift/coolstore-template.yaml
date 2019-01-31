@@ -1065,273 +1065,140 @@ objects:
       contextDir: cart-service
       git:
         ref: ${GIT_REF}
-
         uri: ${GIT_URI}
-
       type: Git
-
     strategy:
-
       sourceStrategy:
-
         env:
-
         - name: MAVEN_MIRROR_URL
-
           value: ${MAVEN_MIRROR_URL}
-
         from:
-
           kind: ImageStreamTag
-
           name: redhat-openjdk18-openshift:1.1
           namespace: ${IMAGE_STREAM_NAMESPACE}
-
       type: Source
-
     triggers:
-
     - type: ConfigChange
-
     - imageChange: {}
-
       type: ImageChange
-
 - apiVersion: v1
-
   kind: DeploymentConfig
-
   metadata:
-
     name: cart
-
     labels:
-
       app: cart
-
   spec:
-
     replicas: 1
-
     selector:
-
       deploymentconfig: cart
-
     strategy:
-
       resources: {}
-
       type: Recreate
-
     template:
-
       metadata:
-
         labels:
-
           app: cart
-
           deploymentconfig: cart
-
         name: cart
-
       spec:
-
         containers:
-
         - env:
           - name: CATALOG_ENDPOINT
-
             value: "http://catalog:8080"
-
           - name: PRICING_ENDPOINT
-
             value: "http://pricing:8080"
-
           - name: KIE_CONTAINER_DEPLOYMENT
-
             value: ${KIE_CONTAINER_DEPLOYMENT}
-
           - name: KIE_SERVER_USER
-
             value: ${KIE_SERVER_USER}
-
           - name: KIE_SERVER_PASSWORD
-
             value: ${KIE_SERVER_PASSWORD}
-
           - name: DB_USERNAME
-
             value: ${CART_DB_USERNAME}
-
           - name: DB_PASSWORD
-
             value: ${CART_DB_PASSWORD}
-
           - name: DB_DATABASE
-
-            value: cartdb
-            
-          - name: DB_SERVER
-          
+            value: cartdb           
+          - name: DB_SERVER          
             value: cart-postgresql
-
           image: cart
-
           imagePullPolicy: Always
-
           livenessProbe:
-
             failureThreshold: 10
-
             httpGet:
-
               path: /health
-
               port: 8080
-
               scheme: HTTP
-
-            initialDelaySeconds: 30
-            
-            periodSeconds: 5 
-            
-            successThreshold: 1 
-            
+            initialDelaySeconds: 30           
+            periodSeconds: 5             
+            successThreshold: 1             
             timeoutSeconds: 1
-
           name: cart
-
           ports:
-
           - containerPort: 8778
-
             name: jolokia
-
             protocol: TCP
-
           - containerPort: 8080
-
             name: http
-
             protocol: TCP
-
           - containerPort: 8888
-
             name: ping
-
             protocol: TCP
-
           readinessProbe:
-
             failureThreshold: 10
-
             httpGet:
-
               path: /health
-
               port: 8080
-
               scheme: HTTP
-
             initialDelaySeconds: 30
-
             periodSeconds: 5
-
             successThreshold: 1
-
             timeoutSeconds: 1
-
           resources:
-
             limits:
-
               memory: 1Gi
-
             requests:
-
               memory: 512Mi
-
           terminationMessagePath: /dev/termination-log
-
         dnsPolicy: ClusterFirst
-
         restartPolicy: Always
-
         securityContext: {}
-
         terminationGracePeriodSeconds: 75
-
     triggers:
-
     - imageChangeParams:
-
         automatic: true
-
         containerNames:
-
         - cart
-
         from:
-
           kind: ImageStreamTag
-
           name: cart:latest
-
       type: ImageChange
-
     - type: ConfigChange
-
 - apiVersion: v1
-
   kind: Service
-
   metadata:
-
     annotations:
-
       service.alpha.openshift.io/dependencies: '[{"name":"cart-postgresql","namespace":"","kind":"Service"}]'
-
     labels:
-
       app: cart
-
     name: cart
-
   spec:
-
     ports:
-
     - port: 8080
-
       protocol: TCP
-
       targetPort: 8080
-
     selector:
-
       deploymentconfig: cart
-
 - apiVersion: v1
-
   kind: DeploymentConfig
-
   metadata:
-
     name: cart-postgresql
-
     labels:
-
       app: cart
-
       comp-type: database
-
   spec:
-
     replicas: 1
-
     selector:
-
       deploymentconfig: cart-postgresql
 
     strategy:
@@ -1353,137 +1220,71 @@ objects:
         timeoutSeconds: 600
         updatePeriodSeconds: 1
       type: Recreate
-
     template:
-
       metadata:
-
         labels:
-
           app: cart
-
           comp-type: database
-
           deploymentconfig: cart-postgresql
-
         name: cart-postgresql
-
       spec:
-
         containers:
-
         - env:
-
           - name: POSTGRESQL_USER
-
             value: ${CART_DB_USERNAME}
-
           - name: POSTGRESQL_PASSWORD
-
             value: ${CART_DB_PASSWORD}
-
           - name: POSTGRESQL_DATABASE
-
             value: cartdb
-
           image: postgresql
-
           imagePullPolicy: Always
-
           name: cart-postgresql
-
           volumeMounts:
-
           - mountPath: /var/lib/pgsql/data
-
             name: cart-postgresql-data
-
           ports:
-
           - containerPort: 5432
-
             protocol: TCP
-
           livenessProbe:
-
             initialDelaySeconds: 30
-
             tcpSocket:
-
               port: 5432
-
             timeoutSeconds: 60
-
           readinessProbe:
-
             exec:
-
               command:
-
               - /bin/sh
-
               - -i
-
               - -c
-
               - psql -h 127.0.0.1 -U $POSTGRESQL_USER -q -d $POSTGRESQL_DATABASE -c "SELECT 1"
-
             initialDelaySeconds: 30
-
             timeoutSeconds: 60
-
         terminationGracePeriodSeconds: 100
-
         volumes:
-
         - name: cart-postgresql-data
-
           emptyDir: {}
-
     triggers:
-
     - imageChangeParams:
-
         automatic: true
-
         containerNames:
-
         - cart-postgresql
-
         from:
-
           kind: ImageStreamTag
-
           name: postgresql:latest
-
           namespace: ${IMAGE_STREAM_NAMESPACE}
-
       type: ImageChange
-
     - type: ConfigChange
-
 - apiVersion: v1
-
   kind: Service
-
   metadata:
-
     labels:
-
       app: cart
-
     name: cart-postgresql
-
   spec:
-
     ports:
-
     - port: 5432
-
       targetPort: 5432
-
     selector:
-
       deploymentconfig: cart-postgresql
 # Pricing Rules Service
 - apiVersion: v1
