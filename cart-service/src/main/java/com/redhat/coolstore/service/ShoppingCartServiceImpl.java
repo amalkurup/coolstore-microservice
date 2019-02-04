@@ -14,6 +14,7 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import javax.transaction.Transactional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,6 +26,7 @@ import com.redhat.coolstore.model.kie.ShoppingCart;
 import com.redhat.coolstore.model.kie.ShoppingCartItem;
 
 @Repository
+@Transactional
 public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     private static final Logger LOG = LoggerFactory.getLogger(ShoppingCartServiceImpl.class);
