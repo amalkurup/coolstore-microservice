@@ -76,7 +76,7 @@ public class ShoppingCart implements Serializable {
 		
 		if ( sci != null ) {
 			
-			shoppingCartItemList.add(sci);
+			getShoppingCartItemList().add(sci);
 			
 		}
 		
@@ -88,7 +88,7 @@ public class ShoppingCart implements Serializable {
 		
 		if ( sci != null ) {
 			
-			removed = shoppingCartItemList.remove(sci);
+			removed = getShoppingCartItemList().remove(sci);
 			
 		}
 		
@@ -144,7 +144,7 @@ public class ShoppingCart implements Serializable {
 				+ ", shippingTotal=" + shippingTotal
 				+ ", shippingPromoSavings=" + shippingPromoSavings
 				+ ", cartTotal=" + cartTotal + ", shoppingCartItemList="
-				+ shoppingCartItemList + "]";
+				+ getShoppingCartItemList() + "]";
 	}
 	
 }
