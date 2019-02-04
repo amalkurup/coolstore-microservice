@@ -10,6 +10,6 @@ import com.redhat.coolstore.model.kie.Product;
 
 @FeignClient(name = "catalogService", url = "${CATALOG_ENDPOINT}")
 interface CatalogService {
-	@RequestMapping(method = RequestMethod.GET, value = "/api/products")
+	@RequestMapping(method = RequestMethod.GET, value = "/api/products/")
     List<Product> products();
 }
