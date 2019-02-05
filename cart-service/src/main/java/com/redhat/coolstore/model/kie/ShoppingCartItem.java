@@ -33,7 +33,7 @@ public class ShoppingCartItem implements Serializable {
 	private ShoppingCart cartId;
 	
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	@OneToOne
 	@JoinColumn(name="itemid",unique=true)
 	private Product product;
 	
