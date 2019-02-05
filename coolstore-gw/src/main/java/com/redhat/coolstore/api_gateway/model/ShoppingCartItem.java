@@ -6,6 +6,7 @@ public class ShoppingCartItem  {
     public int quantity;
     public double promoSavings;
     public Product product;
+    private long id;
 
     public String toString() {
         return ("productid: " + product.itemId + " quan: " + quantity + " price: " + price);
@@ -21,6 +22,14 @@ public class ShoppingCartItem  {
     		this.price=product.price*quantity;
     	
     }
+    
+    public long getId() {
+		return id;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
 
 	public double getPrice() {
 		return price;
