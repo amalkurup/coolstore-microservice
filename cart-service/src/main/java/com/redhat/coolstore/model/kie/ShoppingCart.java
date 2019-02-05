@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.persistence.GeneratedValue;
+import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -21,7 +23,10 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 public class ShoppingCart implements Serializable {
 
 	private static final long serialVersionUID = -1108043957592113528L;
-	@Id
+	
+	@Id 
+	@GeneratedValue(generator="system-uuid")
+	@GenericGenerator(name="system-uuid", strategy = "uuid")
     @Column(name="cartid")
 	private String cartId;
 	@Column(name="cartitemtotal")
