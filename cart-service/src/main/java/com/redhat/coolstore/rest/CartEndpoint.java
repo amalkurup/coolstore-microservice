@@ -42,7 +42,15 @@ public class CartEndpoint implements Serializable {
     public ShoppingCart add(@PathParam("cartId") String cartId,
                             @PathParam("itemId") String itemId,
                             @PathParam("quantity") int quantity) throws Exception {
-        return shoppingCartService.addItem(cartId, itemId, quantity);
+    	ShoppingCart aCart = null;
+    	try {
+    		aCart = shoppingCartService.addItem(cartId, itemId, quantity);
+    	}
+    	catch(Exception e) {
+    		e.printStackTrace();
+    		throw e;
+    	}
+        return aCart;
     }
 
     @POST
