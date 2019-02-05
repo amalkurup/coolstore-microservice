@@ -11,6 +11,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Id;
@@ -24,9 +25,7 @@ public class ShoppingCart implements Serializable {
 
 	private static final long serialVersionUID = -1108043957592113528L;
 	
-	@Id 
-	@GeneratedValue(generator="system-uuid")
-	@GenericGenerator(name="system-uuid", strategy = "uuid")
+	@Id
     @Column(name="cartid")
 	private String cartId;
 	@Column(name="cartitemtotal")
