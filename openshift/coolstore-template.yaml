@@ -1216,7 +1216,7 @@ objects:
             - name: QUERY2
               value: CREATE TABLE product(itemid text NOT NULL,name text,price double precision, description text,CONSTRAINT product_pkey PRIMARY KEY (itemid))
             - name: QUERY3
-              value: CREATE TABLE shoppingcartitem(id integer, price double precision,quantity integer,promosavings double precision,cartid text,itemid text,CONSTRAINT cartid FOREIGN KEY (cartid) REFERENCES shoppingcart (cartid) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION,CONSTRAINT itemid FOREIGN KEY (itemid) REFERENCES product (itemid) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION)
+              value: CREATE TABLE shoppingcartitem(id bigint, price double precision,quantity integer,promosavings double precision,cartid text,itemid text,CONSTRAINT cartid FOREIGN KEY (cartid) REFERENCES shoppingcart (cartid) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION,CONSTRAINT itemid FOREIGN KEY (itemid) REFERENCES product (itemid) MATCH SIMPLE ON UPDATE NO ACTION ON DELETE NO ACTION)
             - name: QUERY4
               value: insert into shoppingcart values('10001',124.87,6,746.67,100.50,4500.40)
             - name: QUERY5
