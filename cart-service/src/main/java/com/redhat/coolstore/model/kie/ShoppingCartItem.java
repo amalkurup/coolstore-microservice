@@ -30,11 +30,24 @@ public class ShoppingCartItem implements Serializable {
 	@JsonBackReference
 	private ShoppingCart cartId;
 	
-	@Id
+	
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="itemid",unique=true)
 	private Product product;
 	
+	@Id
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	@Column(name="id", updatable=false,nullable=false)
+	private int id;
+	
+	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 	
 	
 	public ShoppingCart getCartId() {
