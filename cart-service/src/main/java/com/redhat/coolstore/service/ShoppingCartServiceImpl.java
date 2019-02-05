@@ -169,7 +169,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         sci.setProduct(product);
         sci.setQuantity(quantity);
         sci.setPrice(product.getPrice());
-        sci.setCartId(cart);
+        
         cart.addShoppingCartItem(sci);
 
         try {
@@ -182,6 +182,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
         carts.put(cartId, cart);
         em.merge(cart);
+        sci.setCartId(cart);
+        em.merge(sci);
         return cart;
     }
 
