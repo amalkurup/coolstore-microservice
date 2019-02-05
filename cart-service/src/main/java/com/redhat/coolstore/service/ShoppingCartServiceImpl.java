@@ -139,9 +139,14 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                 });
 
         toRemoveList.forEach(cart::removeShoppingCartItem);
+        toRemoveList.forEach(sci -> {
+        	em.remove(sci);
+        });
+        em.flush();
         priceShoppingCart(cart);
         carts.put(cartId, cart);
         em.merge(cart);
+        em.flush();
         return cart;
     }
 
@@ -152,6 +157,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         priceShoppingCart(cart);
         carts.put(cartId, cart);
         em.merge(cart);
+        em.flush();
         return cart;
     }
 
@@ -175,7 +181,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         em.merge(cart);
         sci.setCartId(cart);
         em.merge(sci);
-        
+        em.flush();
         try {                       
             priceShoppingCart(cart);
             cart.setShoppingCartItemList(dedupeCartItems(cart));
