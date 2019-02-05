@@ -15,10 +15,20 @@ public class ShoppingCart  {
     public double shippingPromoSavings=0.0;
 
     public double cartTotal=0.0;
+    
+    private String cartId;
 
     public List<ShoppingCartItem> shoppingCartItemList = new ArrayList<ShoppingCartItem>();
     
 
+    public String getCartId() {
+		return cartId;
+	}
+
+	public void setCartId(String cartId) {
+		this.cartId = cartId;
+	}
+    
     public String toString() {
         return ("cart: total: " + cartTotal + " sci list: " + shoppingCartItemList);
     }
