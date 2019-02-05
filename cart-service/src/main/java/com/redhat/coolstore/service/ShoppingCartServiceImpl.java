@@ -171,19 +171,21 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         sci.setPrice(product.getPrice());
         
         cart.addShoppingCartItem(sci);
-
-        try {           
-            cart.setShoppingCartItemList(dedupeCartItems(cart));
+        
+        em.merge(cart);
+        sci.setCartId(cart);
+        em.merge(sci);
+        
+        try {                       
             priceShoppingCart(cart);
+            cart.setShoppingCartItemList(dedupeCartItems(cart));
         } catch (Exception ex) {
             cart.removeShoppingCartItem(sci);
             throw ex;
         }
 
         carts.put(cartId, cart);
-        em.merge(cart);
-        sci.setCartId(cart);
-        em.merge(sci);
+        
         return cart;
     }
 
