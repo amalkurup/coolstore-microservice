@@ -172,9 +172,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         
         cart.addShoppingCartItem(sci);
 
-        try {
-            priceShoppingCart(cart);
+        try {           
             cart.setShoppingCartItemList(dedupeCartItems(cart));
+            priceShoppingCart(cart);
         } catch (Exception ex) {
             cart.removeShoppingCartItem(sci);
             throw ex;
