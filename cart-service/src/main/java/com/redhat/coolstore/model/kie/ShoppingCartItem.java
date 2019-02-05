@@ -25,7 +25,7 @@ public class ShoppingCartItem implements Serializable {
 	@Column(name="promosavings")
 	private double promosavings;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne
 	@JoinColumn(name="cartid")
 	@JsonBackReference
 	private ShoppingCart cartId;
