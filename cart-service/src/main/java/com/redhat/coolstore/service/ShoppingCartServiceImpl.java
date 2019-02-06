@@ -64,6 +64,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public ShoppingCart getShoppingCart(String cartId) {
         if (!carts.containsKey(cartId)) {
             ShoppingCart cart = new ShoppingCart(cartId);
+            em.merge(cart);
             carts.put(cartId, cart);
             return cart;
         }
@@ -186,8 +187,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         //em.flush();
         try {                       
             priceShoppingCart(cart);
-            em.merge(cart);
-            em.flush();
+            //em.merge(cart);
+            //em.flush();
             cart.setShoppingCartItemList(dedupeCartItems(cart));
         } catch (Exception ex) {
             cart.removeShoppingCartItem(sci);
