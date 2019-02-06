@@ -177,7 +177,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         sci.setProduct(product);
         sci.setQuantity(quantity);
         sci.setPrice(product.getPrice());
-        sci.setCartIdValue(cartId);
+        sci.setCartId(cart);
         cart.addShoppingCartItem(sci);
         
         //em.merge(cart);
