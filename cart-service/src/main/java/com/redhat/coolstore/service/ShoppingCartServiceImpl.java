@@ -190,7 +190,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             priceShoppingCart(cart);
             //em.merge(cart);
             //em.flush();
-            cart.setShoppingCartItemList(dedupeCartItems(cart));
+            
+            List<ShoppingCartItem> result = dedupeCartItems(cart);
+            //cart.setShoppingCartItemList(result);
             em.merge(cart);
         } catch (Exception ex) {
             cart.removeShoppingCartItem(sci);
