@@ -32,6 +32,9 @@ public class ShoppingCartItem implements Serializable {
 	@JsonBackReference
 	private ShoppingCart cartId;
 	
+	@Column(name="cartid")
+	private String cartidvalue;
+	
 	
 	@OneToOne
 	@JoinColumn(name="itemid",unique=true)
@@ -42,6 +45,14 @@ public class ShoppingCartItem implements Serializable {
 	@Column(name="id", updatable=false,nullable=false)
 	private long id;
 	
+	
+	public String getCartIdValue() {
+		return cartidvalue;
+	}
+
+	public void setCartIdValue(String cartidvalue) {
+		this.cartidvalue = cartidvalue;
+	}
 	
 	public long getId() {
 		return id;

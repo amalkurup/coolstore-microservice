@@ -92,8 +92,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             ps.applyShippingPromotions(sc);
 
             sc.setCartTotal(sc.getCartItemTotal() + sc.getShippingTotal());
-            em.merge(sc);
-            em.flush();
+            //em.merge(sc);
+            //em.flush();
         }
     }
 
@@ -177,15 +177,17 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         sci.setProduct(product);
         sci.setQuantity(quantity);
         sci.setPrice(product.getPrice());
-        
+        sci.setCartIdValue(cartId);
         cart.addShoppingCartItem(sci);
         
-        em.merge(cart);
-        sci.setCartId(cart);
-        em.merge(sci);
-        em.flush();
+        //em.merge(cart);
+        //sci.setCartId(cart);
+        //em.merge(sci);
+        //em.flush();
         try {                       
             priceShoppingCart(cart);
+            em.merge(sci);
+            em.flush();
             cart.setShoppingCartItemList(dedupeCartItems(cart));
         } catch (Exception ex) {
             cart.removeShoppingCartItem(sci);
