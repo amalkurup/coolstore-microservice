@@ -63,7 +63,7 @@ public class ShoppingCart implements Serializable {
 
 	public List<ShoppingCartItem> getShoppingCartItemList() {
 		if(shoppingCartItemList == null) {
-			return new ArrayList<ShoppingCartItem>();
+			shoppingCartItemList = new ArrayList<ShoppingCartItem>(); 
 		}
 		return shoppingCartItemList;
 	}
