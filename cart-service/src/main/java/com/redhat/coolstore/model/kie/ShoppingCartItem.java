@@ -27,11 +27,11 @@ public class ShoppingCartItem implements Serializable {
 	@Column(name="promosavings")
 	private double promosavings;
 	
-	//@ManyToOne
-	//@JoinColumn(name="cartid")
-	//@JsonBackReference
-	@Column(name="cartid")
-	private String cartId;
+	@ManyToOne
+	@JoinColumn(name="cartid")
+	@JsonBackReference
+	//@Column(name="cartid")
+	private ShoppingCart cartId;
 	
 	
 	
@@ -54,11 +54,11 @@ public class ShoppingCartItem implements Serializable {
 	}
 	
 	
-	public String getCartId() {
+	public ShoppingCart getCartId() {
 		return cartId;
 	}
 
-	public void setCartId(String cartId) {
+	public void setCartId(ShoppingCart cartId) {
 		this.cartId = cartId;
 	}
 

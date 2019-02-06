@@ -64,7 +64,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public ShoppingCart getShoppingCart(String cartId) {
         if (!carts.containsKey(cartId)) {
             ShoppingCart cart = new ShoppingCart(cartId);
-            em.merge(cart);
+            //em.merge(cart);
             carts.put(cartId, cart);
             return cart;
         }
@@ -175,11 +175,11 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         }
 
         ShoppingCartItem sci = new ShoppingCartItem();
-        em.persist(sci);
+        //em.persist(sci);
         sci.setProduct(product);
         sci.setQuantity(quantity);
         sci.setPrice(product.getPrice());
-        sci.setCartId(cartId);
+        sci.setCartId(cart);
         cart.addShoppingCartItem(sci);
         
         //em.merge(cart);
@@ -191,6 +191,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             //em.merge(cart);
             //em.flush();
             cart.setShoppingCartItemList(dedupeCartItems(cart));
+            em.merge(cart);
         } catch (Exception ex) {
             cart.removeShoppingCartItem(sci);
             throw ex;
@@ -240,6 +241,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             newItem.setQuantity(quantityMap.get(itemId));
             newItem.setPrice(p.getPrice());
             newItem.setProduct(p);
+            newItem.setCartId(sc);
             result.add(newItem);
         }
 
