@@ -1220,13 +1220,13 @@ objects:
             - name: QUERY4
               value: insert into shoppingcart values('10001',124.87,6,746.67,100.50,4500.40)
             - name: QUERY5
-              value: insert into product values('329198','Forge Laptop Sticker','8.50','JBoss Community Forge Project Sticker')
+              value: insert into product values('329199','Forge Laptop Sticker',8.50,'JBoss Community Forge Project Sticker')
             - name: QUERY6
-              value: insert into product values('329299','Red Fedora','34.99','Official Red Hat Fedora')
+              value: insert into product values ('329299','Red Fedora',34.99,'Official Red Hat Fedora'),('165613','Solid Performance Polo',17.80,'Moisture-wicking, antimicrobial 100% polyester design wicks for life of garment. No-curl, rib-knit collar; special collar band maintains crisp fold; three-button placket with dyed-to-match buttons; hemmed sleeves; even bottom with side vents; Import. Embroidery. Red Pepper.'),('165614','Ogio Caliber Polo',28.75,'Moisture-wicking 100% polyester. Rib-knit collar and cuffs; Ogio jacquard tape inside neck; bar-tacked three-button placket with Ogio dyed-to-match buttons; side vents; tagless; Ogio badge on left sleeve. Import. Embroidery. Black.'),('165954','16 oz. Vortex Tumbler',6.00,'Double-wall insulated, BPA-free, acrylic cup. Push-on lid with thumb-slide closure; for hot and cold beverages. Holds 16 oz. Hand wash only. Imprint. Clear.'),('444434','Pebble Smart Watch',24.00,'Smart glasses and smart watches are perhaps two of the most exciting developments in recent years. '),('444435','Oculus Rift',106.00,'The world of gaming has also undergone some very unique and compelling tech advances in recent years. Virtual reality, the concept of complete immersion into a digital universe through a special headset, has been the white whale of gaming and digital technology ever since Geekstakes Oculus Rift GiveawayNintendo marketed its Virtual Boy gaming system in 1995.Lytro'),('444436','Lytro Camera',44.30,'Consumers who want to up their photography game are looking at newfangled cameras like the Lytro Field camera, designed to take photos with infinite focus, so you can decide later exactly where you want the focus of each image to be. ')
             - name: QUERY7
               value: insert into shoppingcartitem(id, price,quantity,promosavings,cartid,itemid) values(1000, 756.65,3,577.86,'10001','329299')
             - name: QUERY8
-              value: insert into shoppingcartitem(id ,price,quantity,promosavings,cartid,itemid) values(1001, 867.78,6,235.46,'10001','329198')
+              value: insert into shoppingcartitem(id ,price,quantity,promosavings,cartid,itemid) values(1001, 867.78,6,235.46,'10001','329199')
             - name: PGPASSWORD
               value: ${POSTGRESQL_PASSWORD}
             - name: QUERY9
