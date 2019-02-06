@@ -175,6 +175,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         }
 
         ShoppingCartItem sci = new ShoppingCartItem();
+        em.persist(sci);
         sci.setProduct(product);
         sci.setQuantity(quantity);
         sci.setPrice(product.getPrice());
