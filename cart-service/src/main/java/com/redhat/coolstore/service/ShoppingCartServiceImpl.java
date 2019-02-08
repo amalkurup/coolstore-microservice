@@ -48,13 +48,14 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private EntityManager em;
 
 	@PostConstruct
-    public void init() { 
+	public void init() { 
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<ShoppingCart> cq = cb.createQuery(ShoppingCart.class);
         Root<ShoppingCart> rootEntry = cq.from(ShoppingCart.class);
         CriteriaQuery<ShoppingCart> all = cq.select(rootEntry);
         TypedQuery<ShoppingCart> allQuery = em.createQuery(all);
         List<ShoppingCart> resultList = allQuery.getResultList();
+        resultList=(List<ShoppingCart>) ((Criteria) resultList).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
        carts = new HashMap<String, ShoppingCart>(resultList.size());
        for (ShoppingCart result : resultList)
           carts.put(result.getCartId(),result);
