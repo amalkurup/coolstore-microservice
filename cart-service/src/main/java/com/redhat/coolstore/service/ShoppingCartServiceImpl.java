@@ -25,6 +25,8 @@ import com.redhat.coolstore.model.kie.Product;
 import com.redhat.coolstore.model.kie.ShoppingCart;
 import com.redhat.coolstore.model.kie.ShoppingCartItem;
 
+import org.hibernate.Criteria;
+
 @Repository
 @Transactional
 public class ShoppingCartServiceImpl implements ShoppingCartService {
